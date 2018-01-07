@@ -2,7 +2,7 @@
 
 season=${1?season param missing}
 
-cd ${season}*
+cd ${season}-*
 
 count=1
 cat list.txt | while read line
