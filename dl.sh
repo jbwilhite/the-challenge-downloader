@@ -4,9 +4,9 @@ season=${1?season param missing}
 
 cd ${season}-*
 
-count=1
-cat list.txt | while read line
+cat list.txt | while read line || [ -n "$line" ]
 do
+    echo $line
     # skip if lines starts with #
     if [[ $line == '#'* ]]
     then
@@ -25,13 +25,11 @@ do
     cd ../
 
     # create file name as S##E##
-    printf -v countPadded "%02d" $count
+    printf -v episodePadded "%02d" ${line:(-2)} # last 2 chars of url
     printf -v seasonPadded "%02d" $season
-    fileName="S${season}E${countPadded}"
+    fileName="S${season}E${episodePadded}"
 
     # concat partials to single video
-    ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy ${fileName}.mp4
+    </dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy ${fileName}.mp4
     rm -rf ./temp
-
-    ((count++))
 done
