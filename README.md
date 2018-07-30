@@ -9,7 +9,7 @@ To download a season:
 ./dl.rb 11
 ```
 
-To download as flv (needed for sound on mtv.ca):
+To download as flv (needed for sound for canadian urls):
 ```
 ./dl.rb -flv 19
 ```
