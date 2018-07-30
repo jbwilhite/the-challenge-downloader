@@ -21,17 +21,13 @@ end
 
 # match to season directory and cd if it exists
 dir = Dir.glob("#{season}-*").first.to_s
-unless !dir.empty? && Dir.chdir(dir)
-  abort 'Season directory not found'
-end
+abort 'Season directory not found' unless !dir.empty? && Dir.chdir(dir)
 
 File.open('list.txt', 'r') do |file|
   file.each_line do |line|
 
     # skip if lines starts with #
-    if line.start_with? '#'
-        next
-    end
+    next if line.start_with? '#'
 
     # download files to temp dir
     # mtv downloads come out in multiple pieces
