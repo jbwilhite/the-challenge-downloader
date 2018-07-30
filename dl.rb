@@ -34,6 +34,7 @@ File.open('list.txt', 'r') do |file|
     episode_padded = line.gsub("\n",'').chars.last(2).join
     file_name = "S#{season_padded}E#{episode_padded}"
 
+    # use ffmpeg to concat the partials
     system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}.flv"
     FileUtils.rm_r './temp'
   end
