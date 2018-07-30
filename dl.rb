@@ -1,9 +1,29 @@
 #!/usr/bin/env ruby
 require 'fileutils'
+require 'optparse'
 
-season = ARGV[0]
 
-Dir.chdir(Dir.glob("#{season}-*").first)
+season = ARGV.last
+flv = false
+ext = '.mp4'
+dl_options = ''
+
+# get options
+OptionParser.new do |o|
+    o.on('-flv', 'FLV') { flv = true }
+    o.parse!
+end
+
+if flv
+  ext = '.flv'
+  dl_options += '-f hds-2048 '
+end
+
+# match to season directory and cd if it exists
+dir = Dir.glob("#{season}-*").first.to_s
+unless !dir.empty? && Dir.chdir(dir)
+  abort 'Season directory not found'
+end
 
 File.open('list.txt', 'r') do |file|
   file.each_line do |line|
@@ -18,10 +38,10 @@ File.open('list.txt', 'r') do |file|
     # autonumber to preserve order
     FileUtils.mkdir_p 'temp'
     Dir.chdir 'temp'
-    system "youtube-dl -f hds-2048 -o \"%(autonumber)s.%(ext)s\" #{line}"
+    system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
 
     # make list file of all partials
-    Dir.glob('*.flv').sort.each do |file|
+    Dir.glob('*.mp4').sort.each do |file|
       open('partials.txt', 'a') { |f|
         f.puts file
       }
@@ -35,7 +55,7 @@ File.open('list.txt', 'r') do |file|
     file_name = "S#{season_padded}E#{episode_padded}"
 
     # use ffmpeg to concat the partials
-    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}.flv"
+    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}.mp4"
     FileUtils.rm_r './temp'
   end
 end
