@@ -9,7 +9,7 @@ To download a season:
 ./dl.rb 11
 ```
 
-To download as flv (needed for sound for canadian urls):
+To download as flv (needed for sound on canadian urls):
 ```
 ./dl.rb -flv 19
 ```
