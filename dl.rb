@@ -37,7 +37,7 @@ File.open('list.txt', 'r') do |file|
     system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
 
     # make list file of all partials
-    Dir.glob('*.mp4').sort.each do |file|
+    Dir.glob("*#{ext}").sort.each do |file|
       open('partials.txt', 'a') { |f|
         f.puts file
       }
@@ -51,7 +51,7 @@ File.open('list.txt', 'r') do |file|
     file_name = "S#{season_padded}E#{episode_padded}"
 
     # use ffmpeg to concat the partials
-    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}.mp4"
+    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}#{ext}"
     FileUtils.rm_r './temp'
   end
 end
