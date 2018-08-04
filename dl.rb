@@ -23,8 +23,8 @@ end
 dir = Dir.glob("#{season}-*").first.to_s
 abort 'Season directory not found' unless !dir.empty? && Dir.chdir(dir)
 
-File.open('list.txt', 'r') do |file|
-  file.each_line do |line|
+File.open('list.txt', 'r') do |list|
+  list.each_line do |line|
 
     # skip if lines starts with #
     next if line.start_with? '#'
@@ -37,9 +37,9 @@ File.open('list.txt', 'r') do |file|
     system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
 
     # make list file of all partials
-    Dir.glob("*#{ext}").sort.each do |file|
-      open('partials.txt', 'a') { |f|
-        f.puts file
+    Dir.glob("*#{ext}").sort.each do |partial|
+      open('partials.txt', 'a') { |partials_list_line|
+        partials_list_line.puts "file '#{partial}'"
       }
     end
 
