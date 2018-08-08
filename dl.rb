@@ -2,7 +2,6 @@
 require 'fileutils'
 require 'optparse'
 
-
 season = ARGV.last
 flv = false
 ext = '.mp4'
@@ -26,8 +25,14 @@ abort 'Season directory not found' unless !dir.empty? && Dir.chdir(dir)
 File.open('list.txt', 'r') do |list|
   list.each_line do |line|
 
-    # skip if lines starts with #
-    next if line.start_with? '#'
+    # create file name as S##E##
+    # if line contains # use everything after that as ep name, else use last two chars
+    line = line.gsub("\n", '')
+    season_padded = season.to_s.rjust(2, '0')
+    episode_padded = line.include?('#') ? line.partition('#').last : line.chars.last(2).join
+    file_name = "S#{season_padded}E#{episode_padded}#{ext}"
+
+    next if File.exist?(file_name)
 
     # download files to temp dir
     # mtv downloads come out in multiple pieces
@@ -45,15 +50,8 @@ File.open('list.txt', 'r') do |list|
 
     Dir.chdir '../'
 
-    # create file name as S##E##
-    # if line contains # use everything after that as ep name, else use last two chars
-    line = line.gsub("\n", '')
-    season_padded = season.to_s.rjust(2, '0')
-    episode_padded = line.include?('#') ? line.partition('#').last : line.chars.last(2).join
-    file_name = "S#{season_padded}E#{episode_padded}"
-
     # use ffmpeg to concat the partials
-    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}#{ext}"
+    system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}"
     FileUtils.rm_r './temp'
   end
 end
