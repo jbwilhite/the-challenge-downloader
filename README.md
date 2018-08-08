@@ -18,4 +18,5 @@ For some reason the canadian urls don't get the proper audio using the default s
 Then change to season directory and convert to mp4
 ``` bash
 for i in *.flv; do name=`echo $i | cut -d'.' -f1`; ffmpeg -i "$i" "${name}.mp4"; done;
+rm *.flv
 ```
