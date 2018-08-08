@@ -32,26 +32,27 @@ File.open('list.txt', 'r') do |list|
     episode_padded = line.include?('#') ? line.partition('#').last : line.chars.last(2).join
     file_name = "S#{season_padded}E#{episode_padded}#{ext}"
 
-    next if File.exist?(file_name)
+    next if File.exist? file_name
 
     # download files to temp dir
     # mtv downloads come out in multiple pieces
     # autonumber to preserve order
-    FileUtils.mkdir_p 'temp'
+    FileUtils.rm_r 'temp'
+    FileUtils.mkdir 'temp'
     Dir.chdir 'temp'
     system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
 
     # make list file of all partials
     Dir.glob("*#{ext}").sort.each do |partial|
-      open('partials.txt', 'a') { |partials_list_line|
+      open('partials.txt', 'a') do |partials_list_line|
         partials_list_line.puts "file '#{partial}'"
-      }
+      end
     end
 
     Dir.chdir '../'
 
     # use ffmpeg to concat the partials
     system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}"
-    FileUtils.rm_r './temp'
+    FileUtils.rm_r 'temp'
   end
 end
