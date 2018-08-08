@@ -10,7 +10,7 @@ To download a season:
 ```
 
 ### Canadian URLs
-For some reason the canadian urls don't get the proper audio using the default settings (mp4).  Use the `-flv` option instead.
+For some reason the canadian urls don't get the proper audio using the default settings (mp4).  Use the `--flv` option instead.
 ``` bash
 ./dl.rb --flv 19
 ```
