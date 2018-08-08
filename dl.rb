@@ -9,7 +9,7 @@ dl_options = ''
 
 # get options
 OptionParser.new do |o|
-    o.on('-flv', 'FLV') { flv = true }
+    o.on('--flv', 'FLV') { flv = true }
     o.parse!
 end
 
