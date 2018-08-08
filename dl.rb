@@ -46,8 +46,10 @@ File.open('list.txt', 'r') do |list|
     Dir.chdir '../'
 
     # create file name as S##E##
+    # if line contains # use everything after that as ep name, else use last two chars
+    line = line.gsub("\n", '')
     season_padded = season.to_s.rjust(2, '0')
-    episode_padded = line.gsub("\n",'').chars.last(2).join
+    episode_padded = line.include?('#') ? line.partition('#').last : line.chars.last(2).join
     file_name = "S#{season_padded}E#{episode_padded}"
 
     # use ffmpeg to concat the partials
