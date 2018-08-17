@@ -24,6 +24,7 @@ abort 'Season directory not found' unless !dir.empty? && Dir.chdir(dir)
 
 File.open('list.txt', 'r') do |list|
   list.each_line do |line|
+    puts line
 
     # create file name as S##E##
     # if line contains # use everything after that as ep name, else use last two chars
@@ -37,7 +38,7 @@ File.open('list.txt', 'r') do |list|
     # download files to temp dir
     # mtv downloads come out in multiple pieces
     # autonumber to preserve order
-    FileUtils.rm_r 'temp'
+    FileUtils.rm_r 'temp' if Dir.exists? 'temp'
     FileUtils.mkdir 'temp'
     Dir.chdir 'temp'
     system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
