@@ -1,6 +1,6 @@
 # the-challenge-downloader
 
-Depends on `youtube-dl` and `ffmpeg`
+Depends on [`youtube-dl`](https://github.com/rg3/youtube-dl) and [`ffmpeg`](https://github.com/FFmpeg/FFmpeg)
 
 Episode urls are stored in a `list.txt` in each season's folder.
 
