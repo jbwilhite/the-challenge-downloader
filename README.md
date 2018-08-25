@@ -5,9 +5,7 @@ Dependencies:
 - [`youtube-dl`](https://github.com/rg3/youtube-dl)
 - [`ffmpeg`](https://github.com/FFmpeg/FFmpeg)
 
-By default, using youtube-dl will create multiple files per episode, broken up on the commercials.  This script concats those files together with ffmpeg.
-
-Episode urls are stored in a `list.txt` in each season's directory.
+By default, using youtube-dl will create multiple files per episode, broken up on the commercials.  This script concats those files together with ffmpeg. Episode urls are stored in a `list.txt` in each season's directory.
 
 To download a season:
 ``` bash
