@@ -1,5 +1,5 @@
 # the-challenge-downloader
-Download full seasons on The Challenge that are available on mtv.com
+Download full seasons on The Challenge that are available on mtv.com or mtv.ca
 
 Dependencies:
 - [`youtube-dl`](https://github.com/rg3/youtube-dl)
