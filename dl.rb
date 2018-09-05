@@ -40,17 +40,17 @@ File.open('list.txt', 'r') do |list|
     # autonumber to preserve order
     FileUtils.rm_r 'temp' if Dir.exists? 'temp'
     FileUtils.mkdir 'temp'
-    Dir.chdir 'temp'
-    system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
 
-    # make list file of all partials
-    Dir.glob("*#{ext}").sort.each do |partial|
-      open('partials.txt', 'a') do |partials_list_line|
-        partials_list_line.puts "file '#{partial}'"
+    Dir.chdir 'temp' do
+      system "youtube-dl #{dl_options} -o \"%(autonumber)s.%(ext)s\" #{line}"
+      
+      # make list file of all partials
+      Dir.glob("*#{ext}").sort.each do |partial|
+        open('partials.txt', 'a') do |partials_list_line|
+          partials_list_line.puts "file '#{partial}'"
+        end
       end
     end
-
-    Dir.chdir '../'
 
     # use ffmpeg to concat the partials
     system "</dev/null ffmpeg -f concat -safe 0 -i temp/partials.txt -c copy #{file_name}"
