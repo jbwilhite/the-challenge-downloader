@@ -19,7 +19,7 @@ if flv
 end
 
 # match to season directory and cd if it exists
-dir = Dir.glob("#{season}-*").first.to_s
+dir = Dir.glob("#{season}*").first.to_s
 abort 'Season directory not found' unless !dir.empty? && Dir.chdir(dir)
 
 File.open('list.txt', 'r') do |list|
