@@ -1,4 +1,7 @@
-temp/
-*.mp4
-*.flv
+*
+
+!.gitignore
+!dl.rb
+!README.nd
+!seasons.json
 
