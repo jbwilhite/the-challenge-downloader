@@ -28,7 +28,7 @@ episodes.each do |episode|
 	file_name = episode[1]
 	url = episode[0]
 	ext = file_name.partition('.').last.prepend('.')
-	dl_options = ext == '.flv' ? '-f hds-2048 ' : ''
+	dl_options = ext == '.flv' ? '-f hds-2048 ' : '-f \'bestvideo[height<=480]+bestaudio/best[height<=480]\''
 
 	next puts "#{file_name} already exists" if File.exist? file_name
 
