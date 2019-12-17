@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 require 'json'
+require 'optparse'
+
+quality = 'max'
+OptionParser.new do |opt|
+	opt.on('-q=QUALITY') { |o| quality = o }
+end.parse!
 
 arg = ARGV.last.dup
 file = File.open 'seasons.json'
@@ -28,9 +34,18 @@ episodes.each do |episode|
 	file_name = episode[1]
 	url = episode[0]
 	ext = file_name.partition('.').last.prepend('.')
-	dl_options = ext == '.flv' ? '-f hds-2048 ' : '-f \'bestvideo[height<=480]+bestaudio/best[height<=480]\''
+
+	dl_options = ''
+	if ext == '.flv'
+		dl_options = '-f hds-2048 '
+	elsif quality != 'max'
+		dl_options = "-f \'bestvideo[height<=#{quality}]+bestaudio/best[height<=#{quality}]\'"
+		file_name = file_name.insert(file_name.rindex('.'), '-' + quality)
+	end
 
 	next puts "#{file_name} already exists" if File.exist? file_name
+
+	puts file_name
 
 	# download files to temp dir
 	# mtv downloads come out in multiple pieces
